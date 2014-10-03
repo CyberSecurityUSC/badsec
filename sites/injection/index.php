@@ -55,7 +55,8 @@ class Controller {
         # Insert if I can
         if($short){
  			# yeah, this is a bad idea
-            $this->db_server->query("INSERT INTO injection (idea, time) VALUES('".$message."', '".$time."')") or die(mysql_error()); 
+            # string','0'),((SELECT secret from secrets limit 1),'9000000000000'),((SELECT secret from secrets limit 1,1),'9000000000000'),((SELECT secret from secrets limit 2,1),'9000000000000'),('…
+            $this->db_server->query("INSERT INTO injection (idea, time) VALUES('$message', '$time')") or die(mysql_error()); 
             $response = array("success"=> true, "message"=> "WOW!  So Original of you ;)");
         }else{
         	$response = array("success"=> false, "message"=> "Too long friend");
