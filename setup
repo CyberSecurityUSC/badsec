@@ -1,0 +1,43 @@
+#!/bin/bash
+show_help(){
+    echo '
+
+    Why Hello there! You must be looking for help
+
+    The Flags:
+
+    i - for I, as in I read the scripts and I know what this will do to my box
+
+    h - display this prompt
+
+    '
+    exit 0
+}
+
+client(){
+    # for a closer look
+    sudo apt-get install mysql-client-5.5
+}
+
+docker(){
+    # runs services
+    curl -s get.docker.io/ubuntu/ | sudo sh
+}
+
+vm(){    
+    client
+    docker
+    exit 0
+}
+
+while getopts "h?ix:" opt; do
+    case "$opt" in
+    h|\?)
+        show_help
+        ;;
+    i)  vm
+        ;;
+    esac
+done
+
+show_help

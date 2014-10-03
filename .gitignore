@@ -1,0 +1,14 @@
+.bash_history
+.bash_logout
+.cache/
+.dockercfg
+.mysql_history
+.profile
+.ssh/
+.vagrant
+.viminfo
+*.pem
+www.pid
+database/backups/
+database/mysql/
+server/sites-enabled/0_streams.conf

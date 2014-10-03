@@ -1,0 +1,202 @@
+#!/bin/bash
+show_help(){
+    echo '
+    Why Hello there! You must be looking for help
+    
+    The Flags: 
+
+    r - run all
+
+    a - create all
+    
+    s - stop particular Container
+    
+    n - new particular container 
+
+    c - start particular container
+
+    m - run bash for mysql container
+
+    x - dont run this unless docker is f-ed
+
+    p - like a phoenix from the ashes
+
+    h - Dunno. Run and find out.
+
+    Chain em together as you see fit 
+    '
+}
+
+run(){
+    mysql
+    hhvm
+    nginx
+}
+
+nginx(){
+
+    # Silently kill
+    sudo docker stop nginx>/dev/null 2>/dev/null
+    sudo docker rm nginx>/dev/null 2>/dev/null
+
+    CONTAINER="server"
+    V=`version`
+    echo "Starting Nginx Container: $(sudo docker run -d -p 80:80 --name nginx \
+        --link injection:injection --link serverside:serverside --link requests:requests \
+        --volumes-from injection -v `pwd`/server/sites-enabled:/etc/nginx/sites-enabled:rw $CONTAINER:$V /bin/server)"
+
+}
+
+mysql(){
+
+    # Silently kill
+    sudo docker stop mysql>/dev/null 2>/dev/null
+    sudo docker rm mysql>/dev/null 2>/dev/null
+
+    CONTAINER="database"
+    V=`version`
+    echo "Starting Mysql Container: $(sudo docker run -d --name mysql -v `pwd`/database/mysql:/var/lib/mysql:rw $CONTAINER:$V /bin/run.sh)"
+
+}
+
+webcontainer(){
+    # Silently kill
+    sudo docker stop $1 >/dev/null 2>/dev/null
+    sudo docker rm $1 >/dev/null 2>/dev/null
+    echo "Starting Hiphop $1 Container: $(sudo docker run -d --name $1 --link mysql:mysql -v `pwd`/sites/$1:/sites:rw $CONTAINER:$V /scripts/$1.sh)"
+}
+
+hhvm(){
+    
+    CONTAINER="sites"
+    V=`version`
+    webcontainer injection 9001
+    webcontainer serverside 9002
+    webcontainer requests 9003
+
+}
+
+version(){
+    if [[ "$CONTAINER" == "sites" || "$CONTAINER" == "server" || "$CONTAINER" == "database" ]]
+    then
+        sudo docker images | grep -o "$CONTAINER\s*[0-9]*" -m 1 | grep -o [0-9]*
+        return
+    fi
+    echo "invalid container: $CONTAINER"
+    exit 1
+}
+
+sites(){
+    CONTAINER="sites"
+    V=$((`version` + 1))
+    cd sites
+    sudo docker build -t sites:$V . 
+    cd ..
+}
+
+database(){
+    CONTAINER="database"
+    V=$((`version` + 1))
+    cd database
+    sudo docker build -t database:$V . 
+    cd ..
+}
+
+server(){
+    CONTAINER="server"
+    V=$((`version` + 1))
+    cd server
+    sudo docker build -t server:$V . 
+    cd ..
+}
+
+prompt(){
+    printf "\nChoose a container...\nCTRL+C to exit:\n"
+    select create in sites server database
+    do
+        # bash reflection say what?
+        eval "$create" || exit 1
+        exit 0
+    done
+
+}
+
+stop(){
+    printf "\nStop a container...\n"
+    select stop in sites server database
+    do
+        sudo docker stop $(sudo docker ps | grep -o ".*\s$stop:" | grep -o '\([0-9a-f]\)\{12\}')
+    done
+}
+
+contain(){
+    printf "\Run image...\nCTRL+C to exit:\n"
+    select image in injection serverside requests nginx mysql
+    do
+        export SCRIPT="debug"
+        # bash reflection say what?
+        eval "$image" || exit 1
+
+    done
+}
+
+die(){
+    echo "Killing..."
+    sudo docker stop $(sudo docker ps | grep -o ".*\s" | grep -o '\([0-9a-f]\)\{12\}')
+    echo "------------"
+}
+
+all(){
+
+    sites
+    server
+    database
+
+}
+
+fuckitall(){
+
+    sudo docker stop $(sudo docker ps -a -q)
+    sudo docker rm   $(sudo docker ps -a -q)
+    sudo docker rmi  $(sudo docker images -a -q)
+
+}
+
+phoenix(){
+
+    fuckitall
+    all
+
+}
+
+CONTAINER="sites"
+V=`version`
+while getopts "h?rnsdiklcxoampv:" opt; do
+    case "$opt" in
+    h|\?)
+        show_help
+        ;;
+    r)  run
+        ;;
+    v)  CONTAINER="$OPTARG";echo "`version`";
+        ;;
+    n)  prompt
+        ;;
+    s)  stop
+        ;;
+    k)  die
+        ;;
+    x)  fuckitall
+        ;;
+    m)  db
+        ;;
+    c)  contain
+        ;;
+    p)  phoenix # just ran out of letters at this point
+        ;;
+    a)  all
+        ;;
+    esac
+done
+
+exit 0
