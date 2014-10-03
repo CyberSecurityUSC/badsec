@@ -33,6 +33,11 @@ run(){
     nginx
 }
 
+use(){
+    CONTAINER="$1"
+    V=`version`    
+}
+
 nginx(){
 
     # Silently kill
@@ -53,8 +58,7 @@ mysql(){
     sudo docker stop mysql>/dev/null 2>/dev/null
     sudo docker rm mysql>/dev/null 2>/dev/null
 
-    CONTAINER="database"
-    V=`version`
+    use database
     echo "Starting Mysql Container: $(sudo docker run -d --name mysql -v `pwd`/database/mysql:/var/lib/mysql:rw $CONTAINER:$V /bin/run.sh)"
 
 }
@@ -66,13 +70,25 @@ webcontainer(){
     echo "Starting Hiphop $1 Container: $(sudo docker run -d --name $1 --link mysql:mysql -v `pwd`/sites/$1:/sites:rw $CONTAINER:$V /scripts/$1.sh)"
 }
 
+injection(){
+    use sites
+    webcontainer injection    
+}
+serverside(){
+    use sites
+    webcontainer serverside
+}
+
+requests(){
+    use sites
+    webcontainer requests
+}
+
 hhvm(){
     
-    CONTAINER="sites"
-    V=`version`
-    webcontainer injection 9001
-    webcontainer serverside 9002
-    webcontainer requests 9003
+    injection
+    serverside
+    requests
 
 }
 
@@ -133,7 +149,6 @@ contain(){
     printf "\Run image...\nCTRL+C to exit:\n"
     select image in injection serverside requests nginx mysql
     do
-        export SCRIPT="debug"
         # bash reflection say what?
         eval "$image" || exit 1
 
