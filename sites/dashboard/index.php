@@ -133,6 +133,7 @@ $controller = new Controller();
         <script type="text/javascript" src="js/rsa.js"> </script>
 
         <link rel="stylesheet" href="/bootstrap.css">
+        <title>Basic Dashboard</title>
 
         <style>
             button,input{ background-color: #fff;}
@@ -142,7 +143,7 @@ $controller = new Controller();
     <div class="container">
 
         <h1>The really basic dashboard</h1>
-        <h2> How's it work?</h2>
+        <h2>How's it work?</h2>
         <p>Choose a submission name and a passphrase- then start entering keys. Multiple people can use the same name, phrase combination.</p>
 
         <?php echo array(

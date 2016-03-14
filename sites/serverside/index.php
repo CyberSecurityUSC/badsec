@@ -16,6 +16,7 @@
 <html>
     <head>
         <link rel="stylesheet" href="/bootstrap.css">
+        <title>Can You DiG it?</title>
     </head>
     <body>
         <div class="container"> 

@@ -251,6 +251,6 @@ INSERT INTO `jokes` VALUES
 (NULL,'Chuck Norris is what Willis is talkin bout.'),
 (NULL,'The lead role for The Pacifier was chosen all depending on a game of Counter-Strike between Vin Diesel and Chuck Norris. Vin Diesel won the game, but only because he was camping. In an angered state of rage, Chuck Norris notified God and got Vin Diesel banned from Earth. That took him down a peg.'),
 (NULL,'Chuck Norris knows whether the moon landings were fake or not.'),
-(NULL,'Chuck Norris was the first person to tame a dinosaur.');
+(NULL,'Chuck Norris was the first person to tame a dinosaur.'),
 (NULL,'Chuck Norris isn\'t laughing. He knows you\'re trying to hack him.');
 UNLOCK TABLES;

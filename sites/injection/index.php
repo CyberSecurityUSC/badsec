@@ -89,6 +89,7 @@ $controller = new Controller();
     <head>
         <!-- KEY=826e13ba7a7fa26448ceadff62022c31154c725ce324bc188c37b364801d395e -->
         <link rel="stylesheet" href="/bootstrap.css">
+        <title>SQL Injection App</title>
     </head>
     <body>
         <div class="container">
