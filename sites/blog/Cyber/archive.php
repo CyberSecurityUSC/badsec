@@ -46,9 +46,9 @@ get_header(); ?>
 
 			// Previous/next page navigation.
 			the_posts_pagination( array(
-				'prev_text'          => __( 'Previous page', 'twentysixteen' ),
-				'next_text'          => __( 'Next page', 'twentysixteen' ),
-				'before_page_number' => '<span class="meta-nav screen-reader-text">' . __( 'Page', 'twentysixteen' ) . ' </span>',
+				'prev_text'          => __( 'Previous page', 'cyber' ),
+				'next_text'          => __( 'Next page', 'cyber' ),
+				'before_page_number' => '<span class="meta-nav screen-reader-text">' . __( 'Page', 'cyber' ) . ' </span>',
 			) );
 
 		// If no content, include the "No posts found" template.
