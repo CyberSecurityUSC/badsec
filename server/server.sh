@@ -9,7 +9,20 @@ upstream serverside {
 
 upstream requests {
     server $REQUESTS_PORT_1337_TCP_ADDR:1337;
-}" > /etc/nginx/sites-enabled/0_streams.conf
+}
+
+upstream chuck {
+    server $CHUCK_PORT_1337_TCP_ADDR:1337;
+}
+
+upstream dashboard {
+    server $DASHBOARD_PORT_1337_TCP_ADDR:1337;
+}
+
+upstream blog {
+    server $BLOG_PORT_1337_TCP_ADDR:1337;
+}
+" > /etc/nginx/sites-enabled/0_streams.conf
 
 memcached -du root;
 service nginx start;

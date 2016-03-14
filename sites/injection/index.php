@@ -54,12 +54,12 @@ class Controller {
 
         # Insert if I can
         if($short){
- 			# yeah, this is a bad idea
+            # yeah, this is a bad idea
             # string','0'),((SELECT secret from secrets limit 1),'9000000000000'),((SELECT secret from secrets limit 1,1),'9000000000000'),((SELECT secret from secrets limit 2,1),'9000000000000'),('…
             $this->db_server->query("INSERT INTO injection (idea, time) VALUES('$message', '$time')") or die(mysql_error()); 
             $response = array("success"=> true, "message"=> "WOW!  So Original of you ;)");
         }else{
-        	$response = array("success"=> false, "message"=> "Too long friend");
+            $response = array("success"=> false, "message"=> "Too long friend");
         }
         return $response;
     }
@@ -86,25 +86,33 @@ $controller = new Controller();
 
 <!doctype html>
 <html>
-	<head>
-	</head>
-	<body>
-	<img src="http://imgs.xkcd.com/comics/exploits_of_a_mom.png" title="Her daughter is named Help I'm trapped in a driver's license factory." alt="Exploits of a mom"/>
-	<h1>Post something to this page!!!</h1>
-	<?php echo $controller->status["message"]?>
-	<form method="post" action="/">
-		<input type="text" name="message"/>
-		<button>Go</button>
-	</form>
-	
-	<?php
-	foreach ($controller->status["data"] as $row) {?>
-	<div class="time">
-		<b><?php echo $row["formatted"]; ?></b>
-		<div class="idea"> 
-			<?php echo $row["idea"]; ?>
-		</div> 
-	</div> 
-	<?php }?>
-	</body>
+    <head>
+        <!-- KEY=826e13ba7a7fa26448ceadff62022c31154c725ce324bc188c37b364801d395e -->
+        <link rel="stylesheet" href="/bootstrap.css">
+    </head>
+    <body>
+        <div class="container">
+            <div class="center-block text-center">
+                <img src="/exploits.jpg" title="Her daughter is named Help I'm trapped in a driver's license factory." alt="Exploits of a mom"/>
+                <h1>Post something to this page!!!</h1>
+                <h4><?php echo $controller->status["message"]?></h4>
+                <form method="post" action="/" class="form-inline">
+                    <input class="form-control" type="text" name="message"/>
+                    <button type="submit" class="btn btn-primary">Post that Jazz</button>
+                </form>
+                <hr/>
+            </div>
+            <table class='table'>        
+            <?php
+                foreach ($controller->status["data"] as $row) {?>
+                <tr class="time">
+                    <td><b><?php echo $row["formatted"]; ?></b></td>
+                    <td class="idea"> 
+                        <?php echo $row["idea"]; ?>
+                    </td> 
+                </tr>
+            <?php }?>
+            </table>
+        </div>
+    </body>
 </html>

@@ -1,2 +1,5 @@
 [core]
 	autocrlf = true
+[user]
+	email = derp@derpson.derp
+	name = Derp

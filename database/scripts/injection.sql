@@ -1,4 +1,4 @@
-grant all on injection.* to someguy@'%' identified by 'n4styliz4rd' with grant option; 
+grant select, insert on injection.* to someguy@'%' identified by 'n4styliz4rd' with grant option; 
 
 /* Posts Table */
 DROP TABLE IF EXISTS `injection`;
@@ -25,7 +25,6 @@ CREATE TABLE `secrets` (
 LOCK TABLES `secrets` WRITE;
 
 	INSERT INTO `secrets` VALUES ('This was too easy huh?');
-	INSERT INTO `secrets` VALUES ('2b32c98f8a5540e1f0444a7192eff247');
-	INSERT INTO `secrets` VALUES ('b646d30ff79f54221175874985779da3');
+	INSERT INTO `secrets` VALUES ('118073a6f72f4337172db076da98fb0427a0aeef4f624e681db7368e7e839708');
 
 UNLOCK TABLES;

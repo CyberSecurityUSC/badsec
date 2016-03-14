@@ -15,6 +15,7 @@ RUN sudo apt-get -y update
 ADD server.sh /bin/server
 RUN chmod +x /bin/server
 
+RUN mkdir -p /static
+
 VOLUME ["/etc/nginx/sites-enabled"]
-VOLUME ["/static"]
 EXPOSE 80

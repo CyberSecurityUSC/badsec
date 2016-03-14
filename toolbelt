@@ -41,61 +41,101 @@ use(){
 nginx(){
 
     # Silently kill
-    sudo docker stop nginx>/dev/null 2>/dev/null
-    sudo docker rm nginx>/dev/null 2>/dev/null
+    docker stop nginx>/dev/null 2>/dev/null
+    docker rm nginx>/dev/null 2>/dev/null
 
     CONTAINER="server"
     V=`version`
-    echo "Starting Nginx Container: $(sudo docker run -d -p 80:80 --name nginx \
-        --link injection:injection --link serverside:serverside --link requests:requests \
-        --volumes-from injection -v `pwd`/server/sites-enabled:/etc/nginx/sites-enabled:rw $CONTAINER:$V /bin/server)"
+    echo "Starting Nginx Container: $(docker run -d -p 80:80 --name nginx $FLAGS \
+        -v `pwd`/sites:/static:rw \
+        -v `pwd`/server/sites-enabled:/etc/nginx/sites-enabled:rw $CONTAINER:$V /bin/server)"
 
 }
 
 mysql(){
 
+    # Persistant data
+    DB=persist
+    docker volume create --name $DB
+
     # Silently kill
-    sudo docker stop mysql>/dev/null 2>/dev/null
-    sudo docker rm mysql>/dev/null 2>/dev/null
+    docker stop mysql>/dev/null 2>/dev/null
+    docker rm mysql>/dev/null 2>/dev/null
 
     use database
-    echo "Starting Mysql Container: $(sudo docker run -d --name mysql -v `pwd`/database/mysql:/var/lib/mysql:rw $CONTAINER:$V /bin/run.sh)"
+    echo "Starting Mysql Container: $(docker run -d --name mysql -v $DB:/var/lib/mysql:rw $CONTAINER:$V /bin/run.sh)"
 
 }
 
 webcontainer(){
+
+    chmod -R 777 sites/scripts
     # Silently kill
-    sudo docker stop $1 >/dev/null 2>/dev/null
-    sudo docker rm $1 >/dev/null 2>/dev/null
-    echo "Starting Hiphop $1 Container: $(sudo docker run -d --name $1 --link mysql:mysql -v `pwd`/sites/$1:/sites:rw $CONTAINER:$V /scripts/$1.sh)"
+    docker stop $1 >/dev/null 2>/dev/null
+    docker rm $1 >/dev/null 2>/dev/null
+    echo "Starting Hiphop $1 Container: $(docker run -d --name $1 $EXTRA --link mysql:mysql -v `pwd`/sites/$1:/sites:rw $CONTAINER:$V /scripts/$1.sh)"
+    EXTRA=
+    chmod -R 000 sites/scripts
 }
 
 injection(){
+    FLAGS="$FLAGS \
+        --link injection:injection"   
     use sites
-    webcontainer injection    
+    webcontainer injection
 }
+
 serverside(){
+    FLAGS="$FLAGS --link serverside:serverside"
+    
     use sites
     webcontainer serverside
 }
 
 requests(){
+    FLAGS="$FLAGS \
+        --link requests:requests"
     use sites
     webcontainer requests
 }
 
+chuck(){
+    FLAGS="$FLAGS --link chuck:chuck"
+    EXTRA="-p 7331:7331"
+    use sites
+    webcontainer chuck
+}
+
+dashboard(){
+    FLAGS="$FLAGS \
+        --link dashboard:dashboard"
+    use sites
+    webcontainer dashboard
+}
+
+blog(){
+    FLAGS="$FLAGS \
+        --link blog:blog"
+    use sites
+    webcontainer blog
+}
+
 hhvm(){
     
+    FLAGS=""
     injection
     serverside
+    dashboard
+    chuck
     requests
+    blog
 
 }
 
 version(){
     if [[ "$CONTAINER" == "sites" || "$CONTAINER" == "server" || "$CONTAINER" == "database" ]]
     then
-        sudo docker images | grep -o "$CONTAINER\s*[0-9]*" -m 1 | grep -o [0-9]*
+        docker images | grep -o "$CONTAINER\s*[0-9]*" -m 1 | grep -o [0-9]*
         return
     fi
     echo "invalid container: $CONTAINER"
@@ -106,7 +146,7 @@ sites(){
     CONTAINER="sites"
     V=$((`version` + 1))
     cd sites
-    sudo docker build -t sites:$V . 
+    docker build -t sites:$V . 
     cd ..
 }
 
@@ -114,7 +154,7 @@ database(){
     CONTAINER="database"
     V=$((`version` + 1))
     cd database
-    sudo docker build -t database:$V . 
+    docker build -t database:$V . 
     cd ..
 }
 
@@ -122,7 +162,7 @@ server(){
     CONTAINER="server"
     V=$((`version` + 1))
     cd server
-    sudo docker build -t server:$V . 
+    docker build -t server:$V . 
     cd ..
 }
 
@@ -141,7 +181,7 @@ stop(){
     printf "\nStop a container...\n"
     select stop in sites server database
     do
-        sudo docker stop $(sudo docker ps | grep -o ".*\s$stop:" | grep -o '\([0-9a-f]\)\{12\}')
+        docker stop $(docker ps | grep -o ".*\s$stop:" | grep -o '\([0-9a-f]\)\{12\}')
     done
 }
 
@@ -157,7 +197,7 @@ contain(){
 
 die(){
     echo "Killing..."
-    sudo docker stop $(sudo docker ps | grep -o ".*\s" | grep -o '\([0-9a-f]\)\{12\}')
+    docker stop $(docker ps | grep -o ".*\s" | grep -o '\([0-9a-f]\)\{12\}')
     echo "------------"
 }
 
@@ -171,9 +211,9 @@ all(){
 
 fuckitall(){
 
-    sudo docker stop $(sudo docker ps -a -q)
-    sudo docker rm   $(sudo docker ps -a -q)
-    sudo docker rmi  $(sudo docker images -a -q)
+    docker stop $(docker ps -a -q)
+    docker rm   $(docker ps -a -q)
+    docker rmi  $(docker images -a -q)
 
 }
 

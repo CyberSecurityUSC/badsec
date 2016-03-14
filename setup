@@ -16,12 +16,12 @@ show_help(){
 
 client(){
     # for a closer look
-    sudo apt-get install mysql-client-5.5
+    sudo apt-get install -y mysql-client-5.5
 }
 
 docker(){
     # runs services
-    curl -s get.docker.io/ubuntu/ | sudo sh
+    curl -L -s get.docker.com | sudo sh
 }
 
 vm(){    
