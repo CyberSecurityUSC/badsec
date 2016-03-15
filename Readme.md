@@ -5,7 +5,7 @@ So what is this?
 
 It's a framework for managing various exploitable Docker containers. All together, these containers come together to make a CTF (or Capture the Flag). Included is a basic dashboard for Flag submission, and a blog for task detailing.
 
-[!images/dash.png]
+![DashBoard](images/dash.png)
 
 Getting started?
 
