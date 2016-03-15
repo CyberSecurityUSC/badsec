@@ -10,8 +10,8 @@
  * @link http://codex.wordpress.org/Template_Hierarchy
  *
  * @package WordPress
- * @subpackage Twenty_Sixteen
- * @since Twenty Sixteen 1.0
+ * @subpackage Cyber
+ * @since Cyber 1.0
  */
 
 get_header(); ?>
@@ -58,5 +58,4 @@ get_header(); ?>
 		</main><!-- .site-main -->
 	</div><!-- .content-area -->
 
-<?php get_sidebar(); ?>
 <?php get_footer(); ?>

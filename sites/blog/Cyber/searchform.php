@@ -3,8 +3,8 @@
  * Template for displaying search forms in Twenty Sixteen
  *
  * @package WordPress
- * @subpackage Twenty_Sixteen
- * @since Twenty Sixteen 1.0
+ * @subpackage Cyber
+ * @since Cyber 1.0
  */
 ?>
 

@@ -7,8 +7,8 @@
  * relies on many newer functions and markup changes introduced in 4.4.
  *
  * @package WordPress
- * @subpackage Twenty_Sixteen
- * @since Twenty Sixteen 1.0
+ * @subpackage Cyber
+ * @since Cyber 1.0
  */
 
 /**

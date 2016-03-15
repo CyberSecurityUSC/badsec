@@ -32,7 +32,7 @@ LOCK TABLES `flags` WRITE;
 
   # Trivia
   INSERT INTO `flags` VALUES (NULL, 'Ubuntu LTS 16.04 (No spaces, all lower)'                         ,'xenialxerus');
-  INSERT INTO `flags` VALUES (NULL, 'Name the goat (All lower)'                                       ,'buttercup');
+  INSERT INTO `flags` VALUES (NULL, 'Name the goat (All lower)'                                       ,'buttermilk');
 
   # Serverside
   INSERT INTO `flags` VALUES (NULL, 'Are you a yes man? Why, why, why, why, why?'                     ,'9fde2b54a5fda40c8e5c8e8fad49c15e');

@@ -138,7 +138,16 @@ add_action( 'after_setup_theme', 'cyber_content_width', 0 );
  * * @since Cyber 1.0
  */
 function cyber_widgets_init() {
-	// No sidebars
+	// Only Bottom Sidebar
+	register_sidebar( array(
+		'name'          => __( 'Sidebar', 'cyber' ),
+		'id'            => 'sidebar',
+		'description'   => __( 'Add widgets here to appear in the bottom sidebar.', 'cyber' ),
+		'before_widget' => '<section id="%1$s" class="widget %2$s">',
+		'after_widget'  => '</section>',
+		'before_title'  => '<h2 class="widget-title">',
+		'after_title'   => '</h2>',
+	) );
 }
 add_action( 'widgets_init', 'cyber_widgets_init' );
 

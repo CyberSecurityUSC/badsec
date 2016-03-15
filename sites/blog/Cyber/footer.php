@@ -5,8 +5,8 @@
  * Contains the closing of the #content div and all content after
  *
  * @package WordPress
- * @subpackage Twenty_Sixteen
- * @since Twenty Sixteen 1.0
+ * @subpackage Cyber
+ * @since Cyber 1.0
  */
 ?>
 
@@ -48,7 +48,6 @@
 					do_action( 'cyber_credits' );
 				?>
 				<span class="site-title"><a href="<?php echo esc_url( home_url( '/' ) ); ?>" rel="home"><?php bloginfo( 'name' ); ?></a></span>
-				<a href="<?php echo esc_url( __( 'https://wordpress.org/', 'cyber' ) ); ?>"><?php printf( __( 'Proudly powered by %s', 'cyber' ), 'WordPress' ); ?></a>
 			</div><!-- .site-info -->
 		</footer><!-- .site-footer -->
 	</div><!-- .site-inner -->

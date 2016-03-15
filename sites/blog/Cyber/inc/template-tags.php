@@ -5,8 +5,8 @@
  * Eventually, some of the functionality here could be replaced by core features.
  *
  * @package WordPress
- * @subpackage Twenty_Sixteen
- * @since Twenty Sixteen 1.0
+ * @subpackage Cyber
+ * @since Cyber 1.0
  */
 
 if ( ! function_exists( 'cyber_entry_meta' ) ) :
