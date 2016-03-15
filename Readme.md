@@ -25,10 +25,14 @@ Getting your environment running (If you're running some form of Debian, chances
 
 Getting the site running
 -----
-- Change your host file so that `injection.testing.postmodern.technology`,`serverside.testing.postmodern.technology` point to `10.10.10.10` if vagrant and just `localhost` if otherwise. Read how to [here](http://www.howtogeek.com/howto/27350/beginner-geek-how-to-edit-your-hosts-file/)
+- Change your host file so that `dig.it.hack`,`inject.hack`,`request.hack`,`blog.stack`,`dashboard.stack` point to `10.10.10.10` if vagrant and just `localhost` if otherwise. Read how to [here](http://www.howtogeek.com/howto/27350/beginner-geek-how-to-edit-your-hosts-file/)
 - Run `setup -v` if you installed vagrant. Yup that stands for 'setup vagrant'.
 - Run `setup -d` otherwise. Yup that stands for 'setup dev'.
 - Good to go? run `./toolbelt -ad`. This should take awhile. Don't worry. Still have some more tea?
+
+Running the Site from a hotspot
+------
+`sudo apt-get install dnsmaq hostapd; sudo hotspot/run.sh;` Should do the trick. Try restarting the `hostapd` service if it exits.
 
 Awesome. Now you're cranking.
 
