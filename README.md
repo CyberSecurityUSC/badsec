@@ -26,9 +26,8 @@ Getting your environment running (If you're running some form of Debian, chances
 Getting the site running
 -----
 - Change your host file so that `dig.it.hack`,`inject.hack`,`request.hack`,`blog.stack`,`dashboard.stack` point to `10.10.10.10` if vagrant and just `localhost` if otherwise. Read how to [here](http://www.howtogeek.com/howto/27350/beginner-geek-how-to-edit-your-hosts-file/)
-- Run `setup -v` if you installed vagrant. Yup that stands for 'setup vagrant'.
-- Run `setup -d` otherwise. Yup that stands for 'setup dev'.
-- Good to go? run `./toolbelt -ad`. This should take awhile. Don't worry. Still have some more tea?
+- Run `setup -i`. Read the script first, this is just a helper if you agree
+- Good to go? run `./toolbelt -ar`. This should take awhile. Don't worry. Still have some more tea?
 
 Running the Site from a hotspot
 ------
@@ -38,7 +37,7 @@ Awesome. Now you're cranking.
 
 Troubleshooting
 -----
-- If for some reason it hasn't worked, run `./toolbelt -d`. There's a chance the database didn't finish initializing.
+- If for some reason it hasn't worked, run `./toolbelt -ar`. There's a chance the database didn't finish initializing.
 - Another weird reason for it not working is the conversion of unix to windows line endings. This problem sounds pretty weird [but it is legit](http://stackoverflow.com/questions/14219092/bash-my-script-bin-bashm-bad-interpreter-no-such-file-or-directory). Thankfully there's a tool called `dos2unix` which you can install on your vagrant box using `sudo apt-get install dos2unix` run `dos2unix filename` to fix your worries. Note, I think it does something funky to file permissions. Just [make sure no weird file permissions git track into git](http://stackoverflow.com/questions/1580596/how-do-i-make-git-ignore-file-mode-chmod-changes).
 - Is it really bad? See the notes on the `forgetitall` function and reseting your database down below. Send me (DM) an email if it gets to crazy levels of bad contact@dylanmadisetti.com
 - Uploads for wordpress don't work? All ajax reponses and any response request for that matter get crunked up by existing php errors. Comment out the debug conditional in wp-config if you don't want these errors to pop up OR fix the php errors.
@@ -57,4 +56,4 @@ If you play with the dev box, I would highly recommend learning how to `docker`.
 
 Crunked up your local database?
 
-Even though we do weekly backups, don't do whatever you did live. Stop your containers (`./toolbelt -s`) delete the folder `mysql` in `database/` and try running `toolbelt -d` again.
+Stop your containers (`./toolbelt -s`) delete the volume `persist` with `docker volume rm persist` and try running `toolbelt -ar` again.

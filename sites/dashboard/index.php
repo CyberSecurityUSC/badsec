@@ -1,5 +1,6 @@
 <?php 
 
+error_reporting(-1);
 ini_set("display_startup_errors",1);
 ini_set("display_errors",1);
 error_reporting(E_ALL);
@@ -11,13 +12,14 @@ class Controller {
 
     private $db_server;
     private $flags  = "SELECT id, description FROM flags";
-    private $users  = "SELECT name, count(pass) as points FROM points GROUP BY pass ORDER BY points DESC";
+    private $users  = "SELECT name, count(pass) as points FROM points GROUP BY name, pass ORDER BY points DESC";
     private $key;
     private $hash;
     private $details;
 
     public function __construct(){
         # Where are you going?
+	$this->status = array('status'=>0,'users'=>[],'flags'=>[],'public'=>'');
         switch($_SERVER["REQUEST_URI"]){
             case "/":
                 $this->status = $this->index();
@@ -25,6 +27,7 @@ class Controller {
             default:
                 header("HTTP/1.0 404 Not Found");
                 echo "404";
+		exit(0);
                 break;
         }
     }
@@ -79,8 +82,9 @@ class Controller {
     }
 
     private function messages(){
-        $response = array("success"=>false, "message"=>"Momentary difficulities. We're on it.");
-        if (!$this->connect()) return $response;
+        $response = array("success"=>false, "status"=>3, "message"=>"Momentary difficulities. We're on it.", "users"=>[], "flags"=>[]);
+	if (!$this->connect()) return $response;
+	#return $response;
         return array(
             "flags"=>($this->db_server->query($this->flags)->fetch_all(MYSQLI_ASSOC)),
             "users"=>($this->db_server->query($this->users)->fetch_all(MYSQLI_ASSOC))
@@ -88,8 +92,8 @@ class Controller {
     }
 
     private function won(){
-        $response = array("won"=>array(), "name"=>"");
-        if(!isset($_COOKIE['lookup'])) return $response;
+        $response = array("won"=>array(), "name"=>""); 
+	if(!isset($_COOKIE['lookup'])) return $response;
         if (!$this->connect()) return $response;        
         $lookup = $_COOKIE['lookup'];
         $lookup = pack('H*', $lookup);
@@ -149,7 +153,8 @@ $controller = new Controller();
         <?php echo array(
             "",
             "<div class='alert alert-danger'>No points for you.</div>",
-            "<div class='alert alert-success'><strong>Woohoo!</strong> Another point!</div>")[$controller->status["status"]]; ?>
+            "<div class='alert alert-success'><strong>Woohoo!</strong> Another point!</div>",
+	    "<div class='alert alert-error'> <strong>Oh snap.</strong> Something broke. We're on it </div>")[$controller->status["status"]]; ?>
         
         <form method="post" action="/" id="form" class="form-inline" onsubmit="event.preventDefault(); encrypt();">
             <input type="text"    class="form-control" id="name" name="name" placeholder="name" />

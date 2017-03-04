@@ -7,8 +7,8 @@ upstream serverside {
     server $SERVERSIDE_PORT_1337_TCP_ADDR:1337;
 }
 
-upstream requests {
-    server $REQUESTS_PORT_1337_TCP_ADDR:1337;
+upstream gitlist {
+    server $GITLIST_PORT_1337_TCP_ADDR:1337;
 }
 
 upstream chuck {

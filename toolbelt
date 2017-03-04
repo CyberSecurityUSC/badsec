@@ -63,8 +63,9 @@ mysql(){
     docker rm mysql>/dev/null 2>/dev/null
 
     use database
-    echo "Starting Mysql Container: $(docker run -d --name mysql -v $DB:/var/lib/mysql:rw $CONTAINER:$V /bin/run.sh)"
+    echo "Starting Mysql Container: $(docker run -dit --name mysql -v $DB:/var/lib/mysql:rw $CONTAINER:$V /bin/run.sh)"; 
 
+    #/bin/bash)"; 
 }
 
 webcontainer(){
@@ -73,6 +74,7 @@ webcontainer(){
     # Silently kill
     docker stop $1 >/dev/null 2>/dev/null
     docker rm $1 >/dev/null 2>/dev/null
+    # echo "docker run -d --name $1 $EXTRA --link mysql:mysql -v `pwd`/sites/$1:/sites:rw $CONTAINER:$V /scripts/$1.sh";
     echo "Starting Hiphop $1 Container: $(docker run -d --name $1 $EXTRA --link mysql:mysql -v `pwd`/sites/$1:/sites:rw $CONTAINER:$V /scripts/$1.sh)"
     EXTRA=
     chmod -R 000 sites/scripts
@@ -92,11 +94,11 @@ serverside(){
     webcontainer serverside
 }
 
-requests(){
+gitlist(){
     FLAGS="$FLAGS \
-        --link requests:requests"
+        --link gitlist:gitlist"
     use sites
-    webcontainer requests
+    webcontainer gitlist
 }
 
 chuck(){
@@ -127,7 +129,7 @@ hhvm(){
     serverside
     dashboard
     chuck
-    requests
+    gitlist
     blog
 
 }
@@ -135,7 +137,7 @@ hhvm(){
 version(){
     if [[ "$CONTAINER" == "sites" || "$CONTAINER" == "server" || "$CONTAINER" == "database" ]]
     then
-        docker images | grep -o "$CONTAINER\s*[0-9]*" -m 1 | grep -o [0-9]*
+        docker images | grep -o "$CONTAINER\s*[0-9]*" -m 1 | grep -o [0-9]* || echo 1
         return
     fi
     echo "invalid container: $CONTAINER"
@@ -203,9 +205,9 @@ die(){
 
 all(){
 
-    sites
-    server
-    database
+    sites\
+    && server\
+    && database
 
 }
 
@@ -214,6 +216,7 @@ fuckitall(){
     docker stop $(docker ps -a -q)
     docker rm   $(docker ps -a -q)
     docker rmi  $(docker images -a -q)
+    docker volume rm persist;
 
 }
 

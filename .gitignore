@@ -13,5 +13,5 @@ database/backups/
 database/mysql/
 server/sites-enabled/0_streams.conf
 sites/chuck/.git/
-sites/requests/gitlist/
+sites/gitlist/gl
 sites/blog/wordpress/
